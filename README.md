@@ -1,3 +1,16 @@
+Интернет магазин на nextjs 15.
+Технологии: shadcn, react-query, react-table, react-hook-form, redux toolkit, взаимодействие с сервером, fsd.
+
+Страницы:
+
+1. регистрация и авторизация(логин и пароль, google)
+2. dashboard: просморт заказов
+3. home: просмотр самых популярных товаров, поиск товаров, корзина товаров
+4. каталог: просмотр всех товаров
+5. товар: добавление в корзину(redux toolkit), добавление в избранное, добавление отзыва.
+6. избранное: просмотр
+7. категории: просмотр
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
