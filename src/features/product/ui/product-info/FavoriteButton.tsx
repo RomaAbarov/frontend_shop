@@ -11,22 +11,23 @@ type Props = {
 export function FavoriteButton({ product }: Props) {
   const { user } = useProfile();
 
-  const mutateToggleFavorite = toggleFavorite(product.id);
+  const isFavorite = user?.favorites.some((f) => f.id === product.id) ?? false;
+
+  const { toggle, isOptimisticFavorite, isPending } =
+    toggleFavorite(isFavorite);
 
   if (!user) {
     return null;
   }
 
-  const isExists = user.favorites.some((f) => f.id === product.id);
-
   return (
     <Button
       variant="secondary"
       size="icon"
-      onClick={() => mutateToggleFavorite.mutate()}
-      disabled={mutateToggleFavorite.isPending}
+      onClick={() => toggle(product.id)}
+      disabled={isPending}
     >
-      {isExists ? (
+      {isOptimisticFavorite() ? (
         <AiFillHeart color="#F43F5E" className="size-5" />
       ) : (
         <AiOutlineHeart className="size-5" />

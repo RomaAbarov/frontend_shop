@@ -2,13 +2,24 @@ import { profileApi } from "@/shared/services/api/profileApi";
 import { queryClient } from "@/shared/services/api/query-client";
 import { userService } from "@/shared/services/user.service";
 import { useMutation } from "@tanstack/react-query";
+import { startTransition, useOptimistic } from "react";
 
-export function toggleFavorite(productId: string) {
-  const { mutate, isPending } = useMutation({
-    mutationFn: () => userService.toggleFavorite(productId),
+export function toggleFavorite(isFavorite: boolean) {
+  const [favorite, setFavorite] = useOptimistic(isFavorite);
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (productId: string) => userService.toggleFavorite(productId),
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: [profileApi.basekey] }),
   });
 
-  return { mutate, isPending };
+  function toggle(productId: string) {
+    startTransition(async () => {
+      setFavorite(!favorite);
+
+      await mutateAsync(productId);
+    });
+  }
+
+  return { toggle, isOptimisticFavorite: () => favorite, isPending };
 }
